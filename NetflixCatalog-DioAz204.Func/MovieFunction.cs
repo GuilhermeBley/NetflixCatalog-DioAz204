@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NetflixCatalog_DioAz204.Func.Model;
 using NetflixCatalog_DioAz204.Func.Services;
@@ -16,7 +15,9 @@ public class MovieFunction
     private readonly MovieRepository _movieRepository;
 
     public MovieFunction(
-        ILogger<MovieFunction> logger, ContainerStorageRepository storageRepository, MovieRepository movieRepository)
+        ILogger<MovieFunction> logger, 
+        ContainerStorageRepository storageRepository, 
+        MovieRepository movieRepository)
     {
         _logger = logger;
         _storageRepository = storageRepository;
@@ -26,7 +27,6 @@ public class MovieFunction
     [Function("Movie")]
     public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post")] HttpRequest req)
     {
-
         try
         {
             var form = await req.ReadFormAsync();
@@ -44,7 +44,7 @@ public class MovieFunction
             {
                 return new BadRequestObjectResult("Invalid movie data.");
             }
-            
+
             using var stream = file.OpenReadStream();
             await _storageRepository.UploadOrReplaceFileAsync(Guid.NewGuid().ToString() + ".jpeg", stream, file.ContentType);
 

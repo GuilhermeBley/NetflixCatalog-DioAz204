@@ -14,7 +14,7 @@ public class ContainerStorageRepository
         var containerName = configuration["AzureStorage:ContainerName"];
 
         _containerClient = new BlobContainerClient(connectionString, containerName);
-        _containerClient.CreateIfNotExists(PublicAccessType.None);
+        _containerClient.CreateIfNotExists(PublicAccessType.Blob);
     }
 
     public async Task<string> UploadOrReplaceFileAsync(

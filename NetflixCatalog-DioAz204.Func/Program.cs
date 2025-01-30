@@ -10,7 +10,13 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddSingleton<ContainerStorageRepository>();
 builder.Services.AddSingleton<MovieRepository>();
+builder.Services.AddDbContext<AppDbContext>();
 
 builder.ConfigureFunctionsWebApplication();
 
-builder.Build().Run();
+var build = builder.Build();
+
+// Requesting for the context to execute the async seeding
+build.Services.GetRequiredService<AppDbContext>();
+
+build.Run();

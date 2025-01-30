@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace NetflixCatalog_DioAz204.Func.Services;
 
-internal class ContainerStorageRepository
+public class ContainerStorageRepository
 {
     private readonly BlobContainerClient _containerClient;
 

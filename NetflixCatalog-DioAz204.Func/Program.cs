@@ -9,6 +9,7 @@ var builder = FunctionsApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddSingleton<ContainerStorageRepository>();
+builder.Services.AddSingleton<MovieRepository>();
 
 builder.ConfigureFunctionsWebApplication();
 

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "NetflixCatalog_DioAz204.Func": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7242",
+      "launchBrowser": false
+    }
+  }
+}

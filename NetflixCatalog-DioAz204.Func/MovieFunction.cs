@@ -59,4 +59,19 @@ public class MovieFunction
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
+
+    [Function("GetAllMovies")]
+    public async Task<IActionResult> GetAllMovies([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req, ILogger log)
+    {
+        try
+        {
+            IEnumerable<MovieModel> movies = await _movieRepository.GetAllAsync();
+            return new OkObjectResult(movies);
+        }
+        catch (Exception ex)
+        {
+            log.LogError(ex, "Error retrieving movies.");
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
+    }
 }

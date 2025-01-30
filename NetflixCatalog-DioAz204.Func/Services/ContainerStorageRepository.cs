@@ -17,7 +17,7 @@ public class ContainerStorageRepository
         _containerClient.CreateIfNotExists(PublicAccessType.None);
     }
 
-    public async Task UploadOrReplaceFileAsync(
+    public async Task<string> UploadOrReplaceFileAsync(
         string fileName, 
         Stream fileStream, 
         string contentType, 
@@ -29,5 +29,7 @@ public class ContainerStorageRepository
         await blobClient.DeleteIfExistsAsync(cancellationToken: cancellationToken);
 
         await blobClient.UploadAsync(fileStream, new BlobUploadOptions { HttpHeaders = blobHttpHeaders }, cancellationToken);
+
+        return _containerClient.Uri.AbsoluteUri.Trim('/') + $"/{fileName}";
     }
 }

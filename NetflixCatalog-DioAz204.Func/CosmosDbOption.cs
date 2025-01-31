@@ -13,4 +13,10 @@ public class CosmosDbOption
     [Required]
     [MinLength(10)]
     public string DataBaseName { get; set; } = string.Empty;
+    [Required]
+    [MinLength(10)]
+    public string ConnectionString { get; set; } = string.Empty;
+    [Required]
+    [MinLength(10)]
+    public string Container { get; set; } = string.Empty;
 }

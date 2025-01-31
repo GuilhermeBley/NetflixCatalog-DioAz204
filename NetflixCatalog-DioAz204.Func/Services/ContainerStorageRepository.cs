@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace NetflixCatalog_DioAz204.Func.Services;
 
@@ -8,10 +9,10 @@ public class ContainerStorageRepository
 {
     private readonly BlobContainerClient _containerClient;
 
-    public ContainerStorageRepository(IConfiguration configuration)
+    public ContainerStorageRepository(IOptions<StorageAccountOptions> opt)
     {
-        var connectionString = configuration["AzureStorage:ConnectionString"];
-        var containerName = configuration["AzureStorage:ContainerName"];
+        var connectionString = opt.Value.ConnectionString;
+        var containerName = opt.Value.Container;
 
         _containerClient = new BlobContainerClient(connectionString, containerName);
         _containerClient.CreateIfNotExists(PublicAccessType.Blob);

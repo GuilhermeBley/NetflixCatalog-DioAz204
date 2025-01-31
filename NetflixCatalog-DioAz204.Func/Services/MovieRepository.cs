@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using NetflixCatalog_DioAz204.Func.Model;
 using System.Net;
 
@@ -9,11 +10,11 @@ public class MovieRepository
 {
     private readonly Container _container;
 
-    public MovieRepository(IConfiguration configuration)
+    public MovieRepository(IOptions<CosmosDbOption> configuration)
     {
-        var connectionString = configuration["CosmosDb:ConnectionString"];
-        var databaseName = configuration["CosmosDb:DatabaseName"];
-        var containerName = configuration["CosmosDb:ContainerName"];
+        var connectionString = configuration.Value.Container;
+        var databaseName = configuration.Value.DataBaseName;
+        var containerName = configuration.Value.Container;
 
         CosmosClient client = new CosmosClient(connectionString);
         _container = client.GetContainer(databaseName, containerName);

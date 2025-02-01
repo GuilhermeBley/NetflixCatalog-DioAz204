@@ -46,9 +46,9 @@ public class MovieFunction
             }
 
             using var stream = file.OpenReadStream();
-            await _storageRepository.UploadOrReplaceFileAsync(Guid.NewGuid().ToString() + ".jpeg", stream, file.ContentType);
+            var url = await _storageRepository.UploadOrReplaceFileAsync(Guid.NewGuid().ToString() + ".jpeg", stream, file.ContentType);
 
-            movie.CreatedAt = DateTime.UtcNow;
+            movie.ImageUrl = url;
             var createdMovie = await _movieRepository.CreateAsync(movie);
 
             return new OkObjectResult(new { Id = createdMovie.Id });

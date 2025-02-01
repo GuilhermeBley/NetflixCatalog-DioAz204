@@ -13,7 +13,7 @@ builder.Configuration
             .AddUserSecrets(typeof(Program).Assembly);
 
 builder.Services.AddSingleton<ContainerStorageRepository>();
-builder.Services.AddSingleton<MovieRepository>();
+builder.Services.AddScoped<MovieRepository>();
 builder.Services.AddDbContext<AppDbContext>();
 
 builder.ConfigureFunctionsWebApplication();

@@ -12,7 +12,7 @@ public class MovieRepository
 
     public MovieRepository(IOptions<CosmosDbOption> configuration)
     {
-        var connectionString = configuration.Value.Container;
+        var connectionString = configuration.Value.ConnectionString;
         var databaseName = configuration.Value.DataBaseName;
         var containerName = configuration.Value.Container;
 
@@ -24,7 +24,7 @@ public class MovieRepository
     {
         movie.Id = Guid.NewGuid();
         movie.CreatedAt = DateTime.UtcNow;
-        ItemResponse<MovieModel> response = await _container.CreateItemAsync(movie, new PartitionKey(movie.Category));
+        ItemResponse<MovieModel> response = await _container.CreateItemAsync(movie);
         return response.Resource;
     }
 

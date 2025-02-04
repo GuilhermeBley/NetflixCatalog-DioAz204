@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from './api/NetflixApi';
 import './App.css';
+import AddMovieModal from './components/AddMovieModal';
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [file, setFile] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchMovies();
@@ -18,75 +16,45 @@ function App() {
     setMovies(response.data);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleAddMovie = async (movieData) => {
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('movieData', JSON.stringify({ name, description, category }));
+    formData.append('file', movieData.file);
+    formData.append('movieData', JSON.stringify({
+      name: movieData.name,
+      description: movieData.description,
+      category: movieData.category,
+    }));
 
-    await axios.post('api/Movie', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-
-    fetchMovies();
+    try {
+      await axios.post(`api/Movie`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      fetchMovies(); // Refresh the movie list
+    } catch (error) {
+      console.error('Error adding movie:', error);
+    }
   };
 
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">Bley Movies</h1>
 
-      {/* Add Movie Form */}
-      <div className="card mb-4">
-        <div className="card-body">
-          <h5 className="card-title">Add a New Movie</h5>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <input
-                type="file"
-                className="form-control"
-                onChange={(e) => setFile(e.target.files[0])}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Add Movie
-            </button>
-          </form>
-        </div>
+      {/* Button to Open Modal */}
+      <div className="text-center mb-4">
+        <button class="btn btn-primary" onClick={() => setShowModal(true)}>
+          Add New Movie
+        </button>
       </div>
+
+      {/* Add Movie Modal */}
+      <AddMovieModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        handleSubmit={handleAddMovie}
+      />
+
 
       {/* Movie List */}
       <div className="row">

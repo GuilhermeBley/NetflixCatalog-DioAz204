@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from './api/NetflixApi';
 import './App.css';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
   }, []);
 
   const fetchMovies = async () => {
-    const response = await axios.get('http://localhost:5000/GetAllMovies');
+    const response = await axios.get('api/GetAllMovies');
     setMovies(response.data);
   };
 
@@ -25,7 +25,7 @@ function App() {
     formData.append('file', file);
     formData.append('movieData', JSON.stringify({ name, description, category }));
 
-    await axios.post('http://localhost:5000/Movie', formData, {
+    await axios.post('api/Movie', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
